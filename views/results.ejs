@@ -1,0 +1,50 @@
+<html>
+
+<head>
+  <title>Bitcoin trend app</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+  <h3><a href="javascript:history.back()">Go Back</a></h3>
+
+  <h2>Results for Bitcoin query</h2>
+  <h3>Bitcoin price trend search results for dates between <%- startingdate %> and <%- endingdate %>.</h3>
+
+  <br/>
+
+  <%if (longestBearish.length > 1) { %>
+    <% var bearish = longestBearish.map(bear => {
+    return '<p>' + 'Between ' + bear.starting + ' and ' + bear.ending + '.' + '</p>'
+    }).join('') -%>
+  <%- '<h3>' + 'There were ' + longestBearish.length + ' equally long (' + longestBearish[0].length + ' days) bearish trends.' + '</h3>' %>
+  <%- '<p>' + 'They were:' + '</p>' %>
+  <%- bearish %>
+  <% } else { %>
+    <%- '<h3>' + 'Longest bearish trend was ' + longestBearish[0].length + ' days in a row between ' + longestBearish[0].starting + ' and ' + longestBearish[0].ending + '.' + '</h3>' %>
+  <% } %>
+
+  <br/>
+  <h3>Highest trading volume in a day for given date range.</h3>
+  <table>
+    <tr>
+      <th class="rightpad">Date</th>
+      <th class="rightpad">Volume</th>
+    </tr>
+    <tr>
+      <td class="rightpad"><%- highestVolume.date %></td>
+      <td class="rightpad"><%- highestVolume.value %></td>
+  </table>
+
+  <br/>
+  <h3>Time Machine.</h3>
+  <% if (timeMachine.increment === 0) { %>
+    <%- '<p><b>Given timerange has only bearish trend, do not buy in this time.</b></p>' %>
+  <% } else { %>
+    <%- '<p>Best time to buy is ' + timeMachine.buydate + ' with price ' + timeMachine.buyprice + ' and sell ' + timeMachine.selldate + ' with price ' + timeMachine.sellprice + '.</p>' %>
+    <%- '<p>This will lead to profit of ' + timeMachine.increment + '.</p>' %>
+  <% } %>
+
+</body>
+
+</html>

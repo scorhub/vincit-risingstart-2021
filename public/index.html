@@ -1,0 +1,55 @@
+<html>
+
+<head>
+  <title>Bitcoin trend app</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+
+<body>
+  <h2>Get Bitcoin's historic data from CoinGecko</h2>
+
+  <h3>Enter date range</h3>
+  <form action="/api/bitcoin" method="GET">
+    <label for="startdate">Starting Date:</label>
+    <input type="date" id="apistartdate" name="startdate" onchange="getApiStartDate(event)" required />
+    <br/>
+    <label for="enddate">Ending Date:</label>
+    <input type="date" id="apienddate" name="enddate" onchange="getApiEndDate(event)" required />
+    <br/><br/>
+    <input type="submit" value="Submit"/>
+  </form>
+
+  <script type="application/javascript">
+    // Parse date to format, that is accepted by <input type="date"/>
+    function parseDate(date){
+      var date = new Date(date);
+      var day = date.getDate();
+      var month = date.getMonth()+1;
+      var year = date.getFullYear();
+      if( day < 10 ){ day = '0' + day };
+      if( month < 10 ){ month= '0' + month };
+      return date = year+'-'+month+'-'+day;
+    };
+    // Change date by input
+    function setNewDate(oldDate, add){
+      oldDate = new Date(oldDate);
+      var newDate = oldDate.getDate() + add;
+      oldDate.setDate(newDate);
+      oldDate = parseDate(oldDate);
+      return oldDate;
+    };
+    
+    // Set controllers for dates
+    document.getElementById("apienddate").setAttribute("max", setNewDate(new Date(), -1));
+    document.getElementById("apistartdate").setAttribute("max", setNewDate(new Date(), -1));
+    function getApiStartDate(e){
+      document.getElementById("apienddate").setAttribute("min", setNewDate(parseDate(e.target.value),1));
+    };
+    function getApiEndDate(e){
+      document.getElementById("apistartdate").setAttribute("max", setNewDate(parseDate(e.target.value),-1));
+    };
+  </script>
+
+</body>
+
+</html>
